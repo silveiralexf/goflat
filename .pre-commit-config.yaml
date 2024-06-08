@@ -1,0 +1,60 @@
+# default_stages: [commit]
+fail_fast: true
+default_language_version:
+  golang: "1.22.2"
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: trailing-whitespace
+        exclude_types:
+          - "json"
+      - id: end-of-file-fixer
+        exclude_types:
+          - "json"
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+    -   id: go-task-installed
+        name: go-task-installed
+        language: system
+        entry: scripts/check-prereqs.sh
+        pass_filenames: false
+        types: [go]
+
+  - repo: local
+    hooks:
+    -   id: go-fmt
+        name: go-fmt
+        language: system
+        entry: task go:fmt
+        pass_filenames: false
+        types: [go]
+
+  - repo: local
+    hooks:
+    -   id: go-vet
+        name: go-vet
+        language: system
+        entry: task go:vet
+        pass_filenames: false
+        types: [go]
+
+  - repo: local
+    hooks:
+    -   id: go-lint
+        name: go-lint
+        language: system
+        entry: task go:lint
+        pass_filenames: false
+        types: [go]
+
+  - repo: local
+    hooks:
+    -   id: go-tests-unit
+        name: go-tests-unit
+        language: system
+        entry: task test:unit
+        pass_filenames: false
+        types: [go]

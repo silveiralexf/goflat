@@ -1,0 +1,66 @@
+version: "3"
+
+dotenv: [".env"]
+
+vars:
+  APP_NAME: goflat
+  APP_IMAGE_REGISTRY: silveiralexf/goflat:latest
+  APP_PATH_BASE: "{{.USER_WORKING_DIR}}"
+  APP_PATH_API: "{{.USER_WORKING_DIR}}/api"
+  APP_PATH_UI: "{{.USER_WORKING_DIR}}/pkg/ui"
+  APP_PATH_BIN: "{{.USER_WORKING_DIR}}/bin"
+  SHELL: /usr/bin/env bash -o pipefail
+  GOLANGCI_LINT_VERSION: v1.57.2
+
+includes:
+  app:
+    taskfile: ./build/tasks/app/Taskfile.yml
+  docs:
+    taskfile: ./build/tasks/docs/Taskfile.yml
+  docker:
+    taskfile: ./build/tasks/docker/Taskfile.yml
+  install:
+    taskfile: ./build/tasks/install/Taskfile.yml
+  go:
+    taskfile: ./build/tasks/go/Taskfile.yml
+  test:
+    taskfile: ./build/tasks/test/Taskfile.yml
+
+tasks:
+  default:
+    desc: Lists available commands
+    cmds:
+      - task: hooks
+      - task -l
+    silent: true
+
+  list:
+    desc: Lists available commands
+    cmds:
+      - task -l
+
+  hooks:
+    desc: Setup git hooks locally
+    cmds:
+      - cp scripts/hooks/* .git/hooks/
+    silent: true
+
+  precommit:
+    desc: Verifies and fix requirements for new commits
+    cmds:
+      - scripts/hooks/pre-commit
+
+  run:
+    desc: Run a controller from your host.
+    cmds:
+      - task: app:run
+    silent: true
+
+  wait:
+    cmds:
+      - sleep infinity
+
+  build:
+    desc: Build binary.
+    cmds:
+      - go build -trimpath -o bin/{{.APP_NAME}} main.go

@@ -1,0 +1,35 @@
+version: "3"
+tasks:
+
+  download:
+    desc: Downloads dependencies and removes unused ones
+    deps:
+      - :hooks
+    cmds:
+      - go mod download -x
+
+  fmt:
+    desc: Run go fmt against code.
+    cmds:
+      - go fmt ./...
+
+  lint:
+    desc: Run golangci-lint linter and perform fixes.
+    cmds:
+      - mkdir -p build/reports/
+      - golangci-lint run -v --fix --out-format github-actions --timeout 5m --issues-exit-code 1 ./... > build/reports/golangci-lint.txt
+      - cat build/reports/golangci-lint.txt
+
+  tidy:
+    desc: Run Go mod tidy
+    deps:
+      - :hooks
+    cmds:
+      - go mod tidy -x
+
+  vet:
+    desc: Run go vet against code.
+    cmds:
+      - mkdir -p web/dist && touch web/dist/index.html 2>&1 /dev/null
+      - go vet ./...
+      - go vet -json ./...

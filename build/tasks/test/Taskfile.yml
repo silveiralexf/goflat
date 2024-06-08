@@ -1,0 +1,29 @@
+version: "3"
+tasks:
+  clean:
+    desc: Clear tests cache
+    deps:
+      - :hooks
+    cmds:
+      - go clean -testcache
+
+  coverage:
+    desc: Run tests
+    cmds:
+      - mkdir -p build/reports/
+      - go test $(go list ./...) -coverprofile build/reports/cover.out
+      - go tool cover -html build/reports/cover.out -o build/reports/cover.html
+
+  unit:
+    desc: Test only unit tests without coverage or E2E
+    cmds:
+      - mkdir -p build/reports/
+      - go test -v $(go list ./...)
+
+  vuln:
+    desc: Run Go Vulnerability Check
+    deps:
+      - :hooks
+      - :install:vuln
+    cmds:
+      - govulncheck -show verbose ./...

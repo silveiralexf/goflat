@@ -1,0 +1,32 @@
+version: "3"
+tasks:
+  all:
+    desc: Install necessary tools.
+    cmds:
+      - task: air
+      - task: golangci-lint
+      - task: goimports
+      - task: vuln
+
+  air:
+    desc: Install Air (hot-reload)
+    cmds:
+      - command -v air 2>&1 /dev/null || go install github.com/air-verse/air@latest
+    silent: true
+
+  golangci-lint:
+    desc: Install golangci-lint
+    cmds:
+      - command -v golangci-lint 2>&1 /dev/null || go install github.com/golangci/golangci-lint/cmd/golangci-lint@{{.GOLANGCI_LINT_VERSION}}
+    silent: true
+
+  goimports:
+    desc: Install Go Imports
+    cmds:
+      - go install golang.org/x/tools/cmd/goimports@latest
+    silent: true
+  vuln:
+    desc: Install Go Vulnerabilities Check
+    cmds:
+      - command -v govulncheck 2>&1 /dev/null || go install golang.org/x/vuln/cmd/govulncheck@latest
+    silent: true

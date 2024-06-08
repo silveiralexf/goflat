@@ -1,0 +1,23 @@
+# More info: https://docs.docker.com/engine/reference/builder/#dockerignore-file
+# Ignore build and test binaries.
+bin/
+
+# Go workspace
+go.work
+go.work.sum
+
+# Go Air
+bin/
+tmp/
+air_errors.log
+
+# Front-End
+node_modules
+*.local
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*

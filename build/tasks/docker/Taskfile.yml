@@ -1,0 +1,16 @@
+version: "3"
+
+vars:
+  DOCKER_BUILD_CMD: docker buildx build
+
+tasks:
+  build:
+    desc: Build docker image with manager
+    cmds:
+      - "{{.DOCKER_BUILD_CMD}} -t {{.APP_IMAGE_REGISTRY}} ."
+  push:
+    desc: Push docker image with manager to local registry
+    deps:
+      - task: build
+    cmds:
+      - docker push {{.APP_IMAGE_REGISTRY}}
