@@ -33,6 +33,7 @@ func GetHandlerSet(timeout time.Duration) http.Handler {
 	r.Use(middleware.Timeout(timeout))
 	r.Use(middleware.Timeout(time.Millisecond * 600))
 	r.Use(middleware.Recoverer)
+	r.Use(middleware.StripSlashes)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -43,7 +44,7 @@ func GetHandlerSet(timeout time.Duration) http.Handler {
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 
-	pathPrefix := os.Getenv("goflat_UI_ASSETS_PREFIX")
+	pathPrefix := os.Getenv("GOFLAT_ASSETS_PREFIX")
 	if pathPrefix == "" {
 		pathPrefix = filepath.Clean("dist")
 	}
