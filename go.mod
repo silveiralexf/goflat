@@ -3,7 +3,7 @@ module github.com/silveiralexf/goflat
 go 1.22.3
 
 require (
-	github.com/go-chi/chi/v5 v5.0.12
+	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-chi/cors v1.2.1
 	github.com/go-chi/render v1.0.3
 	github.com/maragudk/gomponents v0.20.3
