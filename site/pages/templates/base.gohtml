@@ -1,0 +1,130 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>{{ template "title" . }}</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link href="/static/static/public/out.css" rel="stylesheet">
+    <!-- Place favicon.ico in the root directory -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/gh/pocketbase/js-sdk@master/dist/pocketbase.umd.js"
+    ></script>
+    <script defer src="/static/static/public/htmx.min.js"></script>
+  </head>
+  <body hx-get="/" hx-trigger="auth-change-event" hx-push-url="true">
+    <!--[if lt IE 8]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+        your experience.
+    <![endif]-->
+    <nav class="bg-gray-800 flex flex-row p-4 gap-x-4">
+    <h2 class="text-xl text-white mt-4 font-bold flex-1"><a href="/">Go-Flat</a></h2>
+
+
+      {{ if .NavInfo.IsGuest }}
+      <button id="openAuth" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Entrar</button>
+      <dialog id="authDialog"
+              class="open:border open:border-4 open:flex open:flex-col open:p-6 open:gap-y-4 backdrop:bg-gradient-to-tl backdrop:to-cyan-700/25 backdrop:from-blue-900/50"
+              >
+        <div class="flex flex-row gap-x-7">
+          <p class="flex-1">Greetings, one and all!</p>
+          <button id="closeAuth">[X]</button>
+        </div>
+        <div class="flex flex-row gap-x-4">
+          {{ range .NavInfo.EnabledOauthProviders }}
+          <button
+            class="underline"
+            onClick="callOauth('{{ . }}')">Login with {{ . }}</button>
+          {{ else }}
+          <p>Please configure at least one oauth provider</p>
+          {{ end }}
+      </div>
+      </dialog>
+      <script defer type="text/javascript">
+        async function callOauth(providerName) {
+          const baseUrl = window.location.protocol + "//" + window.location.host;
+          const pb = new PocketBase(baseUrl);
+
+          // This method initializes a one-off realtime subscription and will
+          // open a popup window with the OAuth2 vendor page to authenticate.
+          //
+          // Once the external OAuth2 sign-in/sign-up flow is completed, the popup
+          // window will be automatically closed and the OAuth2 data sent back
+          // to the user through the previously established realtime connection.
+          const authData = await pb
+            .collection("users")
+            .authWithOAuth2({ provider: providerName });
+
+           // Fetch user metada from OAuth provider
+           const meta = authData.meta;
+
+           if (meta.isNew) {
+             const formData = new FormData();
+             const response = await fetch(meta.avatarUrl);
+
+             if (response.ok) {
+               const file = await response.blob();
+               formData.append('avatar', file);
+             }
+
+            formData.append('name', meta.name);
+
+            await pb.collection('users').update(authData.record.id, formData);
+          }
+
+          // after the above you can also access the auth data from the authStore
+          console.log(pb.authStore.isValid);
+          console.log(pb.authStore.token);
+          console.log(pb.authStore.model.id);
+
+          // "logout" the last authenticated model
+          pb.authStore.clear();
+          document.body.dispatchEvent(new Event("auth-change-event"));
+        }
+      </script>
+      <script defer type="text/javascript">
+        function initAuthDialog() {
+          const dialog = document.querySelector("#authDialog");
+          const showButton = document.querySelector("#openAuth");
+          // const closeButton = document.querySelector("#closeAuth");
+          // Select all buttons that are direct children of the dialog
+          var buttons = authDialog.querySelectorAll("button");
+
+          if (!dialog || !showButton) {
+            console.log("some auth elements are not present");
+            return;
+          }
+          console.log("setting up script for buttons");
+
+          // "Show the dialog" button opens the dialog modally
+          showButton.addEventListener("click", () => {
+            dialog.showModal();
+          });
+
+          buttons.forEach(function (button) {
+            button.addEventListener("click", function () {
+              authDialog.close();
+            });
+          });
+        }
+        initAuthDialog();
+        // "DOMContentLoaded" doesn't work with htmx replacing body
+        // maybe i could use htmx related event, but ok to just do asap, i guess
+        // also - i bet hyperscript would work here
+        // document.addEventListener("DOMContentLoaded", initAuthDialog);
+      </script>
+      {{ else }}
+      <button id="openAuth" hx-get="/logout" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sair</button>
+      <a href="/profile"><img src="{{ .NavInfo.AvatarUrl }}" class="rounded-full" alt="Profile" style="width:42px;height:42px;"></a>
+      {{ end }}
+
+    </nav>
+    <main hx-boost="true">{{ template "main" . }}</main>
+  </body>
+</html>

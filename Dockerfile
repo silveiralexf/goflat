@@ -12,15 +12,15 @@ COPY go.sum go.sum
 RUN go mod download -x
 # Copy the go source
 COPY main.go main.go
-COPY pkg/ pkg/
-COPY web/ web/
+COPY internal/ internal/
+COPY site/ site/
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -a -o /workspace/goflat main.go
+RUN CGO_ENABLED=0 go build -trimpath -a -o /workspace/goflat main.go
 
 FROM scratch
 WORKDIR /
 COPY --from=builder /workspace/goflat /
-COPY --from=builder /workspace/web/dist/ /dist/
+COPY --from=builder /workspace/site/ /site
 USER 65532:65532
 ENTRYPOINT ["/goflat"]
-EXPOSE 3000
+EXPOSE 8090

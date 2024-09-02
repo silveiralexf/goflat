@@ -1,5 +1,14 @@
 version: "3"
 tasks:
+  all:
+    desc: Clear tests cache and run all tests
+    deps:
+      - :hooks
+    cmds:
+      - task: clean
+      - task: coverage
+      - task: vuln
+
   clean:
     desc: Clear tests cache
     deps:

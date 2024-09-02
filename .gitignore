@@ -40,6 +40,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+site/static/public/out.css
 
 # Editor directories and files
 .vscode/*

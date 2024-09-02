@@ -30,6 +30,5 @@ tasks:
   vet:
     desc: Run go vet against code.
     cmds:
-      - mkdir -p web/dist && touch web/dist/index.html 2>&1 /dev/null
       - go vet ./...
       - go vet -json ./...

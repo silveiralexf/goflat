@@ -1,0 +1,11 @@
+{{ define "title" }}
+Profile
+{{ end }}
+
+{{ define "main" }}
+<main class="flex flex-col gap-y-4 p-10 ">
+    <h1 class="text-2xl">Welcome  {{ .NavInfo.Username }}</h1>
+    <p>Will be rendered on server</p>
+    <p>and locked under apis.RequireAdminOrRecordAuth default middleware</p>
+</main>
+{{ end }}

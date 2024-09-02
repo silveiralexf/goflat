@@ -4,12 +4,13 @@
 
 # goflat
 
-A flat, dummy and simple wrapper for building web components with pure go.
+A flat, dummy and simple piece of glue-code for building apps using
+[Go](https://golang.org/) + [HTMX](https://htmx.org/) + [Pocketbase](https://pocketbase.io/).
 
-Idea here is exploring [gomponents](https://github.com/maragudk/gomponents) + [HTMX](https://htmx.org/) with some CSS
-on top, as a better alternative for quickly building simple front-end applications.
+Idea here is experimenting on how to quickly spin-up web applications without
+going too deep through the Javascript/CSS/Vue/React rabbit-hole.
 
-Mostly for studying and testing purposes.
+This project is mostly for studying.
 
 ## Local Setup
 
@@ -26,9 +27,8 @@ task: Available tasks for this project:
 * hooks:                       Setup git hooks locally
 * list:                        Lists available commands
 * precommit:                   Verifies and fix requirements for new commits
-* run:                         Run a controller from your host.
-* app:clean:                   Clears built files and tests
-* app:run:                     Runs goflat
+* run:                         Run the app
+* build:css:                   Buids CSS assets
 * docker:build:                Build docker image with manager
 * docker:push:                 Push docker image with manager to local registry
 * docs:changelog:              Generates rudimentary changelog
@@ -42,16 +42,18 @@ task: Available tasks for this project:
 * install:goimports:           Install Go Imports
 * install:golangci-lint:       Install golangci-lint
 * install:vuln:                Install Go Vulnerabilities Check
+* test:all:                    Clear tests cache and run all tests
 * test:clean:                  Clear tests cache
 * test:coverage:               Run tests
 * test:unit:                   Test only unit tests without coverage or E2E
 * test:vuln:                   Run Go Vulnerability Check
 ```
 
-This project enforces conventional commits and some further quality checks using [pre-commit](https://pre-commit.com), to install hooks locally and test, execute as per below:
+This project enforces conventional commits and some further quality checks using
+[pre-commit](https://pre-commit.com), to install hooks locally and test,
+execute as per below:
 
 ```sh
-$ task hooks
 $ task precommit
 task: [precommit] scripts/hooks/pre-commit
 task: [docs:changelog] scripts/changelog.sh
@@ -69,22 +71,35 @@ go-tests-unit............................................................Passed
 
 ```sh
 $ task run
-/Users/silveiralexf/go/bin/air
-task: [app:run] air
+task: [go:fmt] go fmt ./...
+/Users/felipe.silveira/go/bin/air
+task: [go:tidy] go mod tidy -x
+task: [run] air
 
   __    _   ___
  / /\  | | | |_)
-/_/--\ |_| |_| \_ v1.52.2, built with Go go1.22.4
+/_/--\ |_| |_| \_ v1.52.3, built with Go go1.22.4
 
-[13:55:44] mkdir /Users/silveiralexf/go/src/github.com/silveiralexf/goflat/tmp
-[13:55:44] !exclude bin
-[13:55:44] !exclude build
-[13:55:44] !exclude pkg
-[13:55:44] !exclude scripts
-[13:55:44] !exclude tmp
-[13:55:44] !exclude web
-[13:55:44] building...
-task: [build] go build -trimpath -o bin/goflat main.go
-[13:55:48] running...
-{"time":"2024-06-08T13:55:48.787446+01:00","level":"INFO","msg":"starting server","host":"localhost:3000"}
+[07:55:38] building...
+task: [build:css] tailwindcss -m -i "site/static/src/input.css" -o "site/static/public/out.css"
+
+Rebuilding...
+
+Done in 169ms.
+task: [build] rm -rf bin/goflat
+task: [build] go build -trimpath -o bin/goflat .
+[07:55:44] running...
+2024/09/02 07:55:44 Server started at http://127.0.0.1:8090
+├─ REST API: http://127.0.0.1:8090/api/
+└─ Admin UI: http://127.0.0.1:8090/_/
 ```
+
+## Setting-up Oauth2
+
+For authentication, client ID and secret can be created for example, as per below:
+
+- [Setting-up OAuth 2.0](https://support.google.com/cloud/answer/6158849?hl=en#:~:text=Go%20to%20the%20Google%20Cloud%20Platform%20Console%20Credentials%20page.,to%20add%20a%20new%20secret.)
+
+And to have it available on Pocketbase, just fill the required information at:
+
+- [Auth Providers](http://localhost:8090/_/#/settings/auth-providers)

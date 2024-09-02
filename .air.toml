@@ -11,19 +11,35 @@ tmp_dir = "tmp"
 cmd = "task build"
 # The name of the binary file obtained by the `cmd` command
 # Example for Windows platform: bin = "tmp\main.exe"
-bin = "bin/goflat --logLevel=-4"
+bin = "bin/goflat"
+args_bin = ["serve", "--dev"]
 
-# Customize the command to execute the program by adding an additional compile flag such as GIN_MODE=release
-# Example for Windows platform: full_bin = "tmp\main.exe"
-full_bin = "APP_ENV=dev APP_USER=air ./bin/goflat --logLevel=-4"
 # Listens to files with the following file extensions.
-include_ext = ["go", "tpl", "tmpl", "html"]
+include_ext = [
+  ".air.toml",
+  "css",
+  "go",
+  "gohtml",
+  "html",
+  "js",
+  "templ",
+  "tmpl",
+]
+
 # Ignore these file extensions or directories
-exclude_dir = [".git", "assets", "tmp", "vendor", "node_modules"]
-# Listens to files in the following specified directories
-include_dir = ["pkg", "web", "web/dist"]
+exclude_dir = [".git", "assets", "tmp", "node_modules"]
+exclude_regex = [
+  "_test.go",
+  "_templ\\.go",
+  "bin/pb_data",
+  "pb_data",
+  "bin",
+  ".md",
+]
+
 # Exclude the following documents
 exclude_file = []
+
 # If the file changes too frequently, it is not necessary to trigger a build on every change. You can set the delay time for triggering the build
 delay = 1000
 # Stop running old binaries when a build error occurs.
@@ -45,3 +61,4 @@ runner = "green"
 [misc]
 # Delete tmp directory on exit
 clean_on_exit = true
+keep_scroll = true

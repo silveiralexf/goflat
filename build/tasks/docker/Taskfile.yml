@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  DOCKER_BUILD_CMD: docker buildx build
+  DOCKER_BUILD_CMD: docker buildx build --load
 
 tasks:
   build:
