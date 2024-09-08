@@ -1,8 +1,8 @@
 # CHANGELOG
 
 
-### [2024-09-02]
- * [[a3398eb]](https://github.com/silveiralexf/goflat/a3398eba96b181f9fa4cb1530a89a577e481b1c7) feat: pivot to pocketbase as backend (silveiralexf@gmail.com)
+### [2024-09-04]
+ * [[4ff5b55]](https://github.com/silveiralexf/goflat/4ff5b55bd83233629fdf3a2815ec1ad558125615) feat: pivot to pocketbase as backend (silveiralexf@gmail.com)
 
 
 
