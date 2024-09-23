@@ -5,7 +5,7 @@ go 1.22.5
 require (
 	github.com/gomarkdown/markdown v0.0.0-20240730141124-034f12af3bf6
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
-	github.com/pocketbase/pocketbase v0.22.20
+	github.com/pocketbase/pocketbase v0.22.21
 	github.com/spf13/cast v1.7.0
 )
 
