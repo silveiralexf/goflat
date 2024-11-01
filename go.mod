@@ -5,7 +5,7 @@ go 1.22.5
 require (
 	github.com/gomarkdown/markdown v0.0.0-20240730141124-034f12af3bf6
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
-	github.com/pocketbase/pocketbase v0.22.20
+	github.com/pocketbase/pocketbase v0.22.22
 	github.com/spf13/cast v1.7.0
 )
 
@@ -59,14 +59,14 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	gocloud.dev v0.39.0 // indirect
-	golang.org/x/crypto v0.26.0 // indirect
+	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/image v0.19.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
-	golang.org/x/term v0.23.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/term v0.25.0 // indirect
+	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240716161551-93cc26a95ae9 // indirect
 	google.golang.org/api v0.194.0 // indirect
