@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+### [2024-09-08]
+ * [[0cf69ca]](https://github.com/silveiralexf/goflat/0cf69cad792a5400d450b2543429ce844c728d2b) chore: formatting templates (silveiralexf@gmail.com)
+
+
+
 ### [2024-09-04]
  * [[4ff5b55]](https://github.com/silveiralexf/goflat/4ff5b55bd83233629fdf3a2815ec1ad558125615) feat: pivot to pocketbase as backend (silveiralexf@gmail.com)
 

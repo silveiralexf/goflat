@@ -35,16 +35,16 @@ func GetErrorPageRoute(pb *pocketbase.PocketBase) func(*core.ServeEvent) error {
 			}
 
 			// and since i'm using 'base.gohtml' with Nav, i'll need Nav info
-			s := middleware.NewSession(pb, ctx)
+			s := middleware.NewSession(pb, ctx, "Errors")
 
 			PageData := struct {
-				NavInfo   middleware.SessionData
-				ErrorCode int64
-				ErrorText string
+				SessionData middleware.SessionData
+				ErrorCode   int64
+				ErrorText   string
 			}{
-				NavInfo:   *s,
-				ErrorCode: codeNum,
-				ErrorText: errorText,
+				SessionData: *s,
+				ErrorCode:   codeNum,
+				ErrorText:   errorText,
 			}
 
 			// then render template with it

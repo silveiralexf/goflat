@@ -5,19 +5,24 @@ import (
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/silveiralexf/goflat/internal/middleware"
+	"github.com/silveiralexf/goflat/internal/utils"
 	"github.com/silveiralexf/goflat/site"
 )
 
 func main() {
-	app := pocketbase.New()
+	pb := pocketbase.New()
 
-	middleware.AddCookieSessionMiddleware(app)
-	middleware.AddErrorsMiddleware(app)
-	site.AddPageRoutes(app)
+	middleware.AddCookieSessionMiddleware(pb)
+	middleware.AddErrorsMiddleware(pb)
+	site.AddPageRoutes(pb)
 
 	// starts the pocketbase backend
 	// parses cli arguments for hostname and data dir
-	if err := app.Start(); err != nil {
+	if err := pb.Start(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func init() {
+	utils.InitCollections()
 }

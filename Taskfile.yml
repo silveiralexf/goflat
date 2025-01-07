@@ -1,4 +1,4 @@
----
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 dotenv: [.env]
 vars:
@@ -30,17 +30,23 @@ tasks:
     silent: true
   list:
     desc: Lists available commands
-    cmds: [task -l]
+    cmds:
+      - task -l
   hooks:
     desc: Setup git hooks locally
-    cmds: [cp scripts/hooks/* .git/hooks/]
+    cmds:
+      - cp scripts/hooks/* .git/hooks/
     silent: true
   precommit:
     desc: Verifies and fix requirements for new commits
-    cmds: [scripts/hooks/pre-commit]
+    cmds:
+      - scripts/hooks/pre-commit
   run:
     desc: Run the app
-    deps: [install:air, go:tidy, go:fmt]
+    deps:
+      - install:air
+      - go:tidy
+      - go:fmt
     cmds: [air]
   build:
     desc: Build binary.
@@ -50,4 +56,5 @@ tasks:
       - go build -trimpath -o bin/{{.APP_NAME}} .
   build:css:
     desc: Buids CSS assets
-    cmds: ['tailwindcss -m -i "{{.TAILWIND_SRC}}" -o "{{.TAILWIND_OUT}}"']
+    cmds:
+      - tailwindcss -m -i "{{.TAILWIND_SRC}}" -o "{{.TAILWIND_OUT}}"

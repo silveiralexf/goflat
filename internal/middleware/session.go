@@ -16,15 +16,17 @@ type SessionData struct {
 	IsGuest               bool
 	IsAdmin               bool
 	EnabledOauthProviders []string
+	TargetPage            string
 	Pb                    *pocketbase.PocketBase
 	ApisRequestInfo       *models.RequestInfo
 	ApisAuthRecord        *models.Record
 }
 
-func NewSession(pb *pocketbase.PocketBase, ctx echo.Context) *SessionData {
+func NewSession(pb *pocketbase.PocketBase, ctx echo.Context, targetPage string) *SessionData {
 	s := SessionData{}
 
 	s.Pb = pb
+	s.TargetPage = targetPage
 
 	err := s.setOauthProviderNames()
 	if err != nil {

@@ -12,9 +12,10 @@ import (
 // and will be able to create all necessary info for page render:
 // user data, external api calls, calculations
 func AddPageRoutes(pb *pocketbase.PocketBase) {
-	pb.OnBeforeServe().Add(pages.GetDataPageRoute(pb))
 	pb.OnBeforeServe().Add(pages.GeProfileRoute(pb))
+	pb.OnBeforeServe().Add(pages.GetDataPageRoute(pb))
 	pb.OnBeforeServe().Add(pages.GetErrorPageRoute(pb))
+	pb.OnBeforeServe().Add(pages.GetPhotosPageRoute(pb))
 	pb.OnBeforeServe().Add(pages.GetIndexPageRoute(pb))
 
 	pb.OnBeforeServe().Add(func(e *core.ServeEvent) error {

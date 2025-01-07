@@ -17,12 +17,12 @@ func GeProfileRoute(pb *pocketbase.PocketBase) func(*core.ServeEvent) error {
 		e.Router.GET("/profile", func(ctx echo.Context) error {
 			// get data
 			// and since i'm using 'base.gohtml' with Nav, i'll need Nav info
-			s := middleware.NewSession(pb, ctx)
+			s := middleware.NewSession(pb, ctx, "Profile")
 
 			profileData := struct {
-				NavInfo middleware.SessionData
+				SessionData middleware.SessionData
 			}{
-				NavInfo: *s,
+				SessionData: *s,
 			}
 
 			// then render template with it

@@ -11,7 +11,7 @@ tasks:
   air:
     desc: Install Air (hot-reload)
     cmds:
-      - command -v air 2>&1 /dev/null || go install github.com/air-verse/air@latest
+      - command -v air 2>&1 /dev/null || go install github.com/air-verse/air@v1.52.3
     silent: true
 
   golangci-lint:

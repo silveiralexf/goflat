@@ -17,13 +17,13 @@ func GetIndexPageRoute(pb *pocketbase.PocketBase) func(*core.ServeEvent) error {
 	return func(e *core.ServeEvent) error {
 		e.Router.GET("/", func(ctx echo.Context) error {
 			// first collect data
-			s := middleware.NewSession(pb, ctx)
+			s := middleware.NewSession(pb, ctx, "Index")
 			indexPageData := struct {
 				BackendMessage string
-				NavInfo        middleware.SessionData
+				SessionData    middleware.SessionData
 			}{
 				BackendMessage: "Hello from the backend!",
-				NavInfo:        *s,
+				SessionData:    *s,
 			}
 
 			// then render template with it

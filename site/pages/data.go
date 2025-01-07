@@ -7,9 +7,6 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -23,17 +20,17 @@ func GetDataPageRoute(pb *pocketbase.PocketBase) func(*core.ServeEvent) error {
 		e.Router.GET("/data", func(ctx echo.Context) error {
 			// get data
 			// and since i'm using 'base.gohtml' with Nav, i'll need Nav info
-			s := middleware.NewSession(pb, ctx)
+			s := middleware.NewSession(pb, ctx, "Data")
 
 			pageData := struct {
 				RandomNumber int
 				RandomString string
-				NavInfo      middleware.SessionData
+				SessionData  middleware.SessionData
 				Content      []template.HTML
 			}{
 				RandomNumber: rand.Int(),
 				RandomString: utils.StringWithCharset(25, utils.GetCharset()),
-				NavInfo:      *s,
+				SessionData:  *s,
 				Content:      GetDataCollection(pb, s),
 			}
 
@@ -69,24 +66,10 @@ func GetDataCollection(pb *pocketbase.PocketBase, s *middleware.SessionData) []t
 	data := []template.HTML{}
 	for _, v := range records {
 		contentMarkdown := v.Get("content").(string)
-		contentStr := mdToHTML([]byte(contentMarkdown))
+		contentStr := utils.MarkdownToHTML([]byte(contentMarkdown))
 
 		data = append(data, template.HTML(contentStr))
 	}
 
 	return data
-}
-
-func mdToHTML(md []byte) string {
-	// create markdown parser with extensions
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock
-	p := parser.NewWithExtensions(extensions)
-	doc := p.Parse(md)
-
-	// create HTML renderer with extensions
-	htmlFlags := html.CommonFlags | html.HrefTargetBlank
-	opts := html.RendererOptions{Flags: htmlFlags}
-	renderer := html.NewRenderer(opts)
-
-	return string(markdown.Render(doc, renderer))
 }
